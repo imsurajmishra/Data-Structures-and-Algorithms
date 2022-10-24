@@ -2,6 +2,8 @@ package Leetcode_Solutions.TwoPointer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 public class Leetcode_23 {
 
@@ -16,6 +18,45 @@ public class Leetcode_23 {
 
     class Solution {
         public ListNode mergeKLists(ListNode[] lists) {
+            //    return sol1(lists);
+            return sol2(lists);
+
+
+        }
+
+
+        private ListNode sol2(ListNode[] lists){
+
+            ListNode head = null;
+            ListNode itrPtr = null;
+            Queue<ListNode> minHeap = new PriorityQueue<>((n1, n2) -> n1.val - n2.val);
+
+            for(ListNode node:lists){
+                if (node!=null){
+                    minHeap.add(node);
+                }
+            }
+
+            while(!minHeap.isEmpty()){
+                ListNode current = minHeap.poll();
+                if(current.next!=null){
+                    minHeap.add(current.next);
+                }
+
+                if(head == null){
+                    head = current;
+                    itrPtr = head;
+                }else{
+                    itrPtr.next = current;
+                    itrPtr = itrPtr.next;
+                }
+            }
+
+            return head;
+        }
+
+
+        private ListNode sol1(ListNode[] lists){
             if(lists == null || lists.length==0){
                 return null;
             }
